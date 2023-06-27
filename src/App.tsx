@@ -1,5 +1,5 @@
 
-import ToDoList from "./ToDoList";
+import ToDoList from "./components/ToDoList";
 import "./theme"
 import { createGlobalStyle } from 'styled-components';
 
