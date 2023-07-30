@@ -10,28 +10,41 @@ function ToDoList2() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // 기본적인 것을 잊고 있었다. 새로고침을 없애고 form을 이용해서 엔터고칠수 있다. 
+    // 기본적인 것을 잊고 있었다. 새로고침을 없애고 form을 이용해서 엔터고칠수 있다.
     setTodoList((prev) => [...prev, todo]);
     setTodo("");
   };
 
-  const handleDelete = (index: number) => {
-    setTodoList((prevState) => prevState.filter((todo, i) => i !== index));
+  const handleDelete = (e: any) => {
+    e.preventDefault();
+
+    console.log({
+      target: e.target,
+      currentTarget: e.currentTarget,
+    });
+    console.log(e.target);
+    const $li = e.target.closest("li");
+    const id = parseInt($li.dataset.id, 10);
+    console.dir({
+      id,
+    });
+
+    setTodoList((prevState) => prevState.filter((todo, i) => i !== id));
   };
 
   return (
     <div>
       <h1>To do App</h1>
-      <form action="" onClick={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <input type="text" onChange={handleInput} value={todo} />
         <button>Add</button>
 
-        <ul>
+        <ul onClick={handleDelete}>
           {todoList.map((todo, index) => (
-            <>
-              <li key={index}>{todo}</li>
-              <button onClick={() => handleDelete(index)}>❌Delete</button>
-            </>
+            <li key={index} data-id={index}>
+              <p>{todo}</p>
+              <button>❌Delete</button>
+            </li>
           ))}
         </ul>
       </form>
