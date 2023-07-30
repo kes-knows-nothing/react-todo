@@ -1,19 +1,22 @@
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
 
 function ToDoList2() {
   const [todoList, setTodoList] = useState<string[]>([]);
-  const [todo, setTodo] = useState("");
+  const _input: any = useRef();
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTodo(e.target.value);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // 기본적인 것을 잊고 있었다. 새로고침을 없애고 form을 이용해서 엔터고칠수 있다.
-    setTodoList((prev) => [...prev, todo]);
-    setTodo("");
-  };
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      // 기본적인 것을 잊고 있었다. 새로고침을 없애고 form을 이용해서 엔터고칠수 있다.
+      debugger;
+      const value = _input.current.value;
+      setTodoList((prev) => {
+        return [...prev, value];
+      });
+      _input.current.value = "";
+    },
+    [_input]
+  );
 
   const handleDelete = (e: any) => {
     e.preventDefault();
@@ -23,7 +26,10 @@ function ToDoList2() {
       currentTarget: e.currentTarget,
     });
     console.log(e.target);
+    const isBtnClick = e.target?.nodeName?.toLowerCase() === "button";
+    // 옵셔널 체이닝
     const $li = e.target.closest("li");
+    if (!isBtnClick || !$li) return false;
     const id = parseInt($li.dataset.id, 10);
     console.dir({
       id,
@@ -36,7 +42,7 @@ function ToDoList2() {
     <div>
       <h1>To do App</h1>
       <form onSubmit={handleSubmit}>
-        <input type="text" onChange={handleInput} value={todo} />
+        <input type="text" ref={_input} />
         <button>Add</button>
 
         <ul onClick={handleDelete}>
