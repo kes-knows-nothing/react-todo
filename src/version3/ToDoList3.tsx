@@ -4,7 +4,7 @@ import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 
 
-function ToDoList() { 
+function ToDoList3() { 
     const toDos = useRecoilValue(toDoSelector)
     const [category, setCategory] = useRecoilState(categoryState)
     const onInput = (event:React.FormEvent<HTMLSelectElement>) => {
@@ -116,4 +116,4 @@ function ToDoList() {
 
 
 
-export default ToDoList;
+export default ToDoList3;
